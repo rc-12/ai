@@ -1,0 +1,53 @@
+multi(N, 1, N).
+multi(N1, N2, R) :- T is N2 - 1,
+multi(N1, T, Y),
+R is Y + N1.
+
+
+power(0, Power, 0) :- Power > 0.
+power(Num, 0, 1) :- Num > 0.
+power(Num, Power, Ans) :- Num > 0, Power > 0,
+P1 is Power - 1,
+power(Num, P1, A1),
+Ans is A1 * Num
+
+
+sentence([], []).
+
+sentence(A, []) :-
+    nounPhrase(A, B),
+    verbPhrase(B, []).
+
+nounPhrase(A, B) :-
+    article(A, C),
+    noun(C, B).
+nounPhrase(A, B) :-
+    article(A, C),
+    nounPhrase(C, B).
+nounPhrase(A, B) :-
+    noun(A, B).
+
+verbPhrase(A, B) :-
+    verb(A, B).
+verbPhrase(A, C) :-
+    verb(A, B),
+    nounPhrase(B, C).
+verbPhrase(A, C) :-
+    verb(A, B),
+    prepositionPhrase(B, C).
+
+prepositionPhrase(A, C) :-
+    preposition(A, B),
+    nounPhrase(B, C).
+
+preposition([at|X], X).
+
+article([a|X], X).
+article([the|X], X).
+
+noun([dog|X], X).
+noun([cow|X], X).
+noun([moon|X], X).
+
+verb([barked|X], X).
+verb([winked|X], X).
